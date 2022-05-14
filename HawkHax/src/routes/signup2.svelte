@@ -1,4 +1,7 @@
-<script>
+<script context=module>
+import { goto } from '$app/navigation';
+import { isSignUp1Done} from '../stores.js'
+import { isSignUp2Done} from '../stores.js'
 const languages = ['C',						
 'C++',					
 'C#',			
@@ -25,6 +28,35 @@ const languages = ['C',
 "Ruby",
 "Erlang"];
 
+export async function load() {
+    console.log("yo");
+    let SU1 = false;
+    isSignUp1Done.subscribe(value => {
+    SU1 = value;
+    });
+
+    console.log(SU1);
+    if (!SU1) {
+        return {
+                status: 302,
+                redirect: "/signup"
+            };
+    }
+    else {
+        return {
+            
+        }
+    
+    }
+}
+
+function checkInfo(){
+    console.log("info saved");
+    isSignUp2Done.set(true);
+    goto("/signup3");
+    
+  }
+
 </script>
 
 <head>
@@ -38,7 +70,9 @@ const languages = ['C',
 <body>
     <form>
         <h3>Log In</h3>
-        <h4> Select the languages you are familiar with</h4>
+        <div class="title">
+            <h4> Select the languages you are familiar with</h4>
+        </div>
         <div class="list-of-languages">
             {#each languages as language}
             <div id="ck-button">
@@ -50,7 +84,7 @@ const languages = ['C',
         
         </div>
 
-        <input class="button" type="submit" value="Next" />
+        <input type="button" class="button" value="Next" on:click={checkInfo} />
         
         
         
@@ -97,6 +131,9 @@ line-height: 42px;
 text-align: center;
 }
 
+.title{
+    margin-top:20px;
+}
 ::placeholder{
 color: #e5e5e5;
 }

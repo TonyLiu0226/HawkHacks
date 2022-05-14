@@ -1,19 +1,95 @@
 
 <script>
+  import { goto } from '$app/navigation';
+  import { isSignUp1Done} from '../stores.js'
+
   let userEmail = '';
   let pw1 = '';
   let pw2 = '';
   let githubName = '';
   let phone = '';
-  /**
-* @type {string[]}
-*/
+  let bio = '';
+  
   let message = [];
   let errorMsg = '';
 
   let validEmail = false;
   let validPhone = false;
   let gitHubExists = false;
+
+  let languageList = [''];
+  let frameworkList = [''];
+
+
+  async function registerUser() {
+    let reqBody = { _id : userEmail, password : pw1, languages : languageList, frameworks : frameworkList, github :githubName }
+      let payLoad = {
+            method : 'POST',
+            headers: {'Content-Type': "application/json"},
+            body : JSON.stringify(reqBody)
+        }
+
+      const response = await fetch("http://localhost:8080/adduser",payLoad);
+      if (response.ok) {
+        goto("/home");
+        
+      }
+      
+    }
+  
+
+
+  const languages = ['C',						
+'C++',					
+'C#',			
+'Go',				
+'Java',				
+'JavaScript',			
+'PHP',
+'Python',		
+'Scala',
+'TypeScript',			
+'HTML',
+'CSS',
+'Verilog',
+'ARM Assembly',
+'x86-64 Assembly',
+'Haskell',
+'BASIC',
+'Kotlin',
+'Racket',
+"Swift",
+"R",
+"Rust",
+"Julia",
+"Ruby",
+"Erlang"];
+
+const frameworks = ['Spring',
+    'React',
+    'Vue',
+    'Svelte',
+    'Flask',
+    'FastAPI',
+    'MongoDB',
+    'Firebase',
+    'Amazon Web Services',
+    'Backbone',
+    'Express.JS', 
+    'Angular',
+    'Django',
+    'Laravel',
+    'CircuitPython',
+    'SASS',
+    'ASP.NET Core',
+    'Redis',
+    'MySQL',
+    'NoSQL',
+    'SQL',
+    'Ruby on Rails',
+    'Jquery',
+    'Next.js',
+    'Apache'];
 
 
   function validateEmail() {
@@ -22,7 +98,7 @@
   }
 
   function validatePhone() {
-    console.log(phone);
+
     let validator = /^(\+?1 ?)?\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
     return validator.test(phone);
   }
@@ -33,10 +109,8 @@
 
   function checkInfo(){
     console.log("info saved");
-    return {
-      status: 302,
-      redirect: "/signup2"
-    };
+    isSignUp1Done.set(true);
+    goto("/signup2");
     
   }
 </script>
@@ -96,15 +170,53 @@
           <h6>Please ensure that your phone is in a valid format</h6>
           {/if}
 
-          {#if !(!validEmail || userEmail === '' || pw1.length < 8 || pw2 != pw1 || githubName === '' || !gitHubExists || phone==='' || !validPhone)}
-          <input type="button" class="button" value="Sign up" on:click={checkInfo}/>
-          {:else}
+          <div class="title">
+            <label for="languages"> Select the languages you are familiar with</label>
+        </div>
+        <div class="list-of-languages">
+          <fieldset>
+            {#each languages as language}
+            <div id="ck-button">
+                <label>
+                   <input type="checkbox" name="language" bind:group={languageList} value={language}><span>{language}</span>
+                </label>
+            </div>
+            {/each}
+          </fieldset>
+        </div>
+
+        <div class="title">
+          <label for="frameworks"> Select the frameworks you are familiar with</label>
+      </div>
+      <div class="list-of-frameworks">
+        <fieldset>
+          {#each frameworks as framework}
+          <div id="ck-button">
+              <label>
+                 <input type="checkbox" name="framework" bind:group={frameworkList} value={framework}><span>{framework}</span>
+              </label>
+          </div>
+          {/each}
+        </fieldset>
+      </div>
+
+      <div class="title">
+        <label for="bio"> Please enter your biography below</label>
+      </div>
+    <textarea placeholder="Tell us about yourself!" name="bio" form="signup4" rows="5" bind:value={bio}/>
+    {#if bio === '' || bio.length < 10}
+    <h6>Biography must be at least 10 characters in length</h6>
+    {/if}
+
+          {#if !(!validEmail || userEmail === '' || pw1.length < 8 || pw2 != pw1 || githubName === '' || !gitHubExists || phone==='' || !validPhone || bio ==='' || bio.length < 10)}
+          <input type="button" class="button" value="Sign up" on:click={registerUser}/>
+          {:else} 
             <h4 style="text-align: center;">Sign Up</h4>
           {/if}
           <div class="link">
           <a href="/login" style="text-align: center;">Already have an account? Log in here</a>
           </div>
-          
+
       </form>
   </body>
 
@@ -206,6 +318,18 @@ input{
   border-radius: 5px;
   cursor: pointer;
 }
+
+.title{
+    margin-top:20px;
+}
+
+textarea {
+        margin-top:5px;
+        width: 100%;
+        padding: 8px 20px;
+        background-color: rgba(41, 42, 42, 0.705);
+        cursor:text;
+    }
 
 
 </style>

@@ -16,13 +16,14 @@
 </script>
 <script>
 </script>
+
 <!-- svelte-ignore a11y-missing-attribute -->
 <html>
   <body>
 <Card />
 <Card />
 <div class="Game">
-Hi
+
 </div>
 </body>
 </html>
@@ -35,12 +36,13 @@ html,body{
 }
 .Game{
   flex-grow: 1;
-  background-color: black;  
+  border-radius: 150px;
+  outline: 15px solid black;
   left:65%;
   height:70%;
-  right:0;
+  right:15px;
   top:140px;
-  position:absolute;
+  position:fixed;
 }
 
 </style>

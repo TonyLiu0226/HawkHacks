@@ -1,29 +1,39 @@
 
 <script>
  import { logStore } from "../stores.js";
+ import {goto} from "$app/navigation"
+  
+
   let email = "";
   let password = "";
 
   let loginFailed = false;
+  let displayFieldError = false;
+
   async function log_in() {
-    const requestBody = {email : email, password : password}
-    const payLoad = {
-      method : "POST",
-      body : JSON.stringify(requestBody),
-      headers : {
-        "Content-Type":"application/json"
-      }
-    }
-    const response = await fetch("http://localhost:8080/validateuser",payLoad);
-    console.log("fetched")
-    if (response.ok) {
-      logStore.set(true);
-      
+    if (email.length == 0 || password.length == 0) {
+      displayFieldError = true;
+
     }
     else {
-      loginFailed = true;
+      let reqBody = { email : email, password : password }
+      let payLoad = {
+            method : 'POST',
+            headers: {'Content-Type': "application/json"},
+            body : JSON.stringify(reqBody)
+        }
+
+      const response = await fetch("http://localhost:8080/validateuser",payLoad);
+      if (response.ok) {
+        logStore.set(true);
+        goto("/home");
+        
+      }
+      else {
+        loginFailed = true;
+      }
     }
-    console.log("done")
+    
   }
 </script>
 
@@ -52,8 +62,13 @@
          </div>
           
          {#if loginFailed}
-            <h2 style="color:red;"> Login failed </h2>
+            <h2 style="color:red; text-align:center;"> Login failed </h2>
          {/if}  
+         
+         {#if displayFieldError}
+          <h2 style="color:red; text-align:center;"> Please ensure both fields are filled out!</h2>
+         {/if}
+         
           
       </form>
   </body>

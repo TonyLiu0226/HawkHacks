@@ -11,7 +11,7 @@ def get_user(email):
         db = client["users"]
         users_data = db["users-data"]
         post = {"_id":email}
-        user_data  = users_data.find(post)
+        user_data  = users_data.find_one(post)
         
         if user_data:
             return user_data
@@ -20,6 +20,18 @@ def get_user(email):
             return False
  
     
-    except Exception:
+    except Exception as e:
+        client.close()
+        return False
+    
+def register_user(details):
+    client = MongoClient(DB_CONN_URL)
+    try:
+        db = client["users"]
+        users_data = db["users-data"]
+        users_data.insert_one(details)
+        return True
+    except Exception as e:
+        print(e)
         client.close()
         return False

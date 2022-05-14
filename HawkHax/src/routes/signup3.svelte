@@ -1,5 +1,5 @@
 <script>
-    
+    import { goto } from '$app/navigation';
     const frameworks = ['Spring',
     'React',
     'Vue',
@@ -25,7 +25,13 @@
     'Jquery',
     'Next.js',
     'Apache'];
+
+    function checkInfo(){
+        console.log("info saved");
+        goto("/signup4");
     
+    }
+
     </script>
     
     <head>
@@ -39,8 +45,10 @@
     <body>
         <form>
             <h3>Log In</h3>
-            <h4>Select the frameworks you are familiar with</h4>
-            <div class="list-of-languages">
+            <div class="title">
+                <h4> Select the frameworks you are familiar with</h4>
+            </div>
+            <div class="list-of-frameworks">
                 {#each frameworks as framework}
                 <div id="ck-button">
                     <label>
@@ -51,7 +59,7 @@
             
             </div>
     
-            <input class="button" type="submit" value="Next" />
+            <input type="button" class="button" value="Next" on:click={checkInfo} />
             
             
         </form>
@@ -99,6 +107,10 @@
     
     ::placeholder{
     color: #e5e5e5;
+    }
+
+    .title{
+    margin-top:20px;
     }
     
     .button{

@@ -1,6 +1,6 @@
 <script>
-
-    
+    import { goto } from '$app/navigation';
+    let bio = '';
 </script>
     
     <head>
@@ -14,10 +14,16 @@
     <body>
         <form id="signup4">
             <h3>Log In</h3>
-            <h5>Enter your biography here</h5>
-            <label for="bio"></label>
-            <textarea placeholder="Tell us about yourself!" name="bio" form="signup4" rows="5"/>
-            <input class="button" type="submit" value="Next" />
+            <div class="title">
+                <h5> Please enter your biography below</h5>
+            </div>
+            <textarea placeholder="Tell us about yourself!" name="bio" form="signup4" rows="5" bind:value={bio}/>
+            {#if bio === '' || bio.length < 10}
+            <h6>Biography must be at least 10 characters in length</h6>
+            {:else}
+            <input class="button" type="button" value="Next" />
+            {/if}
+
             
         </form>
     </body>
@@ -64,13 +70,6 @@
       text-align: center;
     }
     
-    label{
-      display: block;
-      margin-top: 30px;
-      font-size: 16px;
-      font-weight: 500;
-    }
-    
     input{
       display: block;
       height: 50px;
@@ -100,9 +99,15 @@
     }
     
     textarea {
+        margin-top:5px;
         width: 100%;
-        padding: 20px 40px;
-        background-color: grey;
+        padding: 8px 20px;
+        background-color: rgba(41, 42, 42, 0.705);
+        cursor:text;
+    }
+
+    .title{
+    margin-top: 20px;
     }
     
     </style>
