@@ -1,0 +1,25 @@
+Spring
+React
+Vue
+Svelte
+Flask
+FastAPI
+MongoDB
+Firebase
+Amazon Web Services
+Backbone
+Express.JS 
+Angular
+Django
+Laravel
+CircuitPython
+SASS
+ASP.NET Core
+Redis
+MySQL
+NoSQL
+SQL
+Ruby on Rails
+Jquery
+Next.js
+Apache

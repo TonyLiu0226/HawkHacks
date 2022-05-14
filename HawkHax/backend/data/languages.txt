@@ -1,0 +1,25 @@
+C						
+C++						
+C#			
+Go					
+Java				
+JavaScript			
+PHP
+Python		
+Scala
+TypeScript			
+HTML
+CSS
+Verilog
+ARM Assembly
+x86-64 Assembly
+Haskell
+BASIC
+Kotlin
+Racket
+Swift
+R
+Rust
+Julia
+Ruby
+Erlang
